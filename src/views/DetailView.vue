@@ -3,9 +3,12 @@
     <p class="text-xl font-semibold text-gray-700 animate-pulse">Cargando...</p>
   </div>
   <div v-else class="max-w-6xl mx-auto p-6 md:p-12">
-    <Link to="/" class="flex items-center text-indigo-600 font-semibold mb-6 hover:text-indigo-800">
+    <RouterLink
+      to="/"
+      class="flex items-center text-indigo-600 font-semibold mb-6 hover:text-indigo-800"
+    >
       <ArrowLeftIcon class="w-5 h-5 mr-2" /> Volver a la lista
-    </Link>
+    </RouterLink>
 
     <div class="flex flex-col md:flex-row gap-8 bg-blue-50 shadow-xl rounded-2xl overflow-hidden">
       <div class="md:w-1/3 flex justify-center items-start">
@@ -46,7 +49,8 @@
 import { getFilmById } from '@/services/getFilmById'
 import { useQuery } from '@tanstack/vue-query'
 import { defineProps } from 'vue'
-
+import { RouterLink } from 'vue-router'
+import { ArrowLeftIcon } from '@heroicons/vue/24/solid'
 const props = defineProps({
   id: String,
 })
