@@ -3,11 +3,7 @@
     <div class="w-64">
       <button
         type="button"
-        @click="
-          () => {
-            open = !open
-          }
-        "
+        @click="open = !open"
         class="w-full flex items-center justify-between px-4 py-2 border rounded-xl bg-white shadow hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
       >
         <span class="truncate">Selecciona géneros...</span>
@@ -40,12 +36,14 @@
               @click="toggleFilter(filter)"
               :class="[
                 'cursor-pointer px-3 py-2 flex justify-between items-center hover:bg-gray-50',
-                isSelected ? 'bg-indigo-50 font-medium' : '',
+                filtersStore.selectedFilters.some((f) => f.id === filter.id)
+                  ? 'bg-indigo-50 font-medium'
+                  : '',
               ]"
             >
               {{ filter.name }}
               <svg
-                v-if="isSelected"
+                v-if="filtersStore.selectedFilters.some((f) => f.id === filter.id)"
                 class="w-4 h-4 text-indigo-600"
                 fill="none"
                 stroke="currentColor"
@@ -80,9 +78,10 @@
 import { useFiltersStore } from '@/stores/filtersStore'
 import { computed, ref } from 'vue'
 import { XCircleIcon } from '@heroicons/vue/24/solid'
-
+import { useDebounce } from '@/composables/useDebounce'
 const open = ref(false)
 const query = ref('')
+const debounceQuery = useDebounce(query, 400)
 const props = defineProps({
   filters: {
     type: Array,
@@ -92,8 +91,8 @@ const props = defineProps({
 const filtersStore = useFiltersStore()
 
 const filtered = computed(() => {
-  return query.value !== ''
-    ? props.filters.filter((f) => f.name.toLowerCase().includes(query.value.toLowerCase()))
+  return debounceQuery.value
+    ? props.filters.filter((f) => f.name.toLowerCase().includes(debounceQuery.value.toLowerCase()))
     : props.filters
 })
 
