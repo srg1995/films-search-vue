@@ -10,7 +10,12 @@
           <CardComponent :film="film" />
         </template>
       </div>
-      <PaginationComponent :page="page" :totalPages="totalPages" :setPage="setPage" />
+      <PaginationComponent
+        :page="page"
+        :totalPages="totalPages"
+        :setPage="setPage"
+        v-model:current-page="page"
+      />
     </div>
   </main>
 </template>
